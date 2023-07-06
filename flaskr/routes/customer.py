@@ -1,7 +1,7 @@
 from ..models.models import Customer
 from flask import jsonify, Blueprint, request
 from ..utils.customer import (
-    find_customer_by_email, build_response_json_customer, find_customer_by_id
+    find_customer_by_email, build_response_dict_customer, find_customer_by_id
 )
 from ..utils.auth import generate_password_hash
 from ..extensions import db
@@ -39,7 +39,7 @@ def customer_create():
     db.session.add(new_customer)
     db.session.commit()
 
-    customer_data = build_response_json_customer(new_customer)
+    customer_data = build_response_dict_customer(new_customer)
 
     return jsonify(customer_data), 201
 
@@ -53,7 +53,7 @@ def customer_read_or_delete(customer_id):
         if not customer:
             return {'error': 'Customer not found'}, 404
 
-        customer_data = build_response_json_customer(customer)
+        customer_data = build_response_dict_customer(customer)
 
         return jsonify(customer_data), 200
     else:

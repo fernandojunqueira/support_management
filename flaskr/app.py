@@ -2,6 +2,7 @@ from flask import Flask
 
 from .extensions import db, migrate
 from .routes.customer import bp as customer_bp
+from .routes.login import bp_login as login_bp
 
 
 def create_app():
@@ -12,5 +13,6 @@ def create_app():
     migrate.init_app(app, db)
 
     app.register_blueprint(customer_bp)
+    app.register_blueprint(login_bp)
 
     return app

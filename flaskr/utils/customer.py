@@ -9,7 +9,7 @@ def find_customer_by_id(id: int):
     return Customer.query.filter_by(id=id).first()
 
 
-def build_response_json_customer(customer):
+def build_response_dict_customer(customer):
     return {
             'id': customer.id,
             'username': customer.username,

@@ -1,6 +1,13 @@
 # support_management
 
-A Rest API de controlador de chamadas é uma solução de back-end desenvolvida em Python Flask. Com essa API, é possível criar, atualizar, visualizar e excluir chamadas, bem como controlar o status e ações das chamadas em andamento.
+A Rest API de controlador de chamadas é uma solução de back-end desenvolvida em Python Flask. Com essa API, é possível criar, atualizar, visualizar e excluir chamadas, bem como controlar o status e ações das chamadas em andamento. Esse projeto possui o arquivo support_management_insomnia.json caso queira importar e fazer os testes no insomnia.
+
+## Sumário
+
+- [Instalação](#instalação)
+- [Uso Local](#uso-local)
+- [Documentação API](#Rotas)
+- [Testes](#testes)
 
 ## Instalação
 
@@ -22,7 +29,7 @@ flask db migrate
 flask db upgrade
 ```
 
-3. Inicie o servidor, para isso para pasta flaskr e rode o comando:
+3. Inicie o servidor, para mude para o diretório flaskr e rode o comando:
 
 ```bash
 flask run
@@ -114,4 +121,12 @@ http://localhost:5000
 	        	"title": "Example"
 	        }
         ]
+
+## Testes
+
+Essa aplicação possui testes unitários. Para rodar os testes é preciso estár no diretório support_management e rodar o seguinte comando:
+
+```bash
+ pytest tests/
+```
 

@@ -112,6 +112,7 @@ def ticket_update_or_delete(ticket_id):
 
         return {"msg": "Deleted"}, 204
 
+
 @bp_ticket.route('/<int:ticket_id>', methods=['DELETE'])
 def ticket_delete(ticket_id):
 
@@ -124,3 +125,27 @@ def ticket_delete(ticket_id):
     db.session.commit()
 
     return {"msg": "Deleted"}, 204
+
+
+@bp_ticket.route('/', methods=['GET'])
+def ticket_list():
+
+    bearer_token = request.headers.get('Authorization')
+
+    if not bearer_token:
+        return {'error': 'Missing token'}, 401
+
+    customer_id_payload = get_id_from_token(bearer_token)
+
+    if customer_id_payload == 'Invalid':
+        return {'error': 'Invalid token'}, 401
+
+    tickets = Ticket.query.all()
+
+    ticket_list = []
+
+    for ticket in tickets:
+        ticket_data = build_response_dict_ticket(ticket)
+        ticket_list.append(ticket_data)
+
+    return jsonify(ticket_list), 200

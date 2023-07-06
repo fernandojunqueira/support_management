@@ -108,10 +108,18 @@ http://localhost:5000
 	        		"email": "fernando@mail.com",
 	        		"phone": "48999999999"
 	        	},
-	        	"description": "Quando rodo o java o pc trava",
+	        	"description": "Example",
 	        	"id": 1,
 	        	"status": "closed",
-	        	"title": "Agora foi"
+	        	"title": "Example"
 	        }
         ]
+
+## Testes
+
+Essa aplicação possui testes unitários. Para rodar os testes é preciso estár no diretório support_management e rodar o seguinte comando:
+
+```bash
+ pytest tests/
+```
 

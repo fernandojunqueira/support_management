@@ -53,40 +53,74 @@ def ticket_create(customer_id):
     return jsonify(ticket_data), 201
 
 
-@bp_ticket.route('/<int:ticket_id>', methods=['PATCH'])
-def ticket_update(ticket_id):
-        
-    data = request.get_json()
-    title = data.get('title')
-    description = data.get('description')
-    status = data.get('status')
+@bp_ticket.route('/<int:ticket_id>', methods=['PATCH', 'DELETE'])
+def ticket_update_or_delete(ticket_id):
+    if request.method == 'PATCH':
 
-    bearer_token = request.headers.get('Authorization')
+        data = request.get_json()
+        title = data.get('title')
+        description = data.get('description')
+        status = data.get('status')
 
-    if not bearer_token:
-        return {'error': 'Missing token'}, 401
+        bearer_token = request.headers.get('Authorization')
 
-    customer_id_payload = get_id_from_token(bearer_token)
+        if not bearer_token:
+            return {'error': 'Missing token'}, 401
 
-    if customer_id_payload == 'Invalid':
-        return {'error': 'Invalid token'}, 401
+        customer_id_payload = get_id_from_token(bearer_token)
+
+        if customer_id_payload == 'Invalid':
+            return {'error': 'Invalid token'}, 401
+
+        ticket = find_ticket_by_id(ticket_id)
+
+        if not ticket:
+            return {"error": "Ticket not found"}, 404
+
+        if title:
+            ticket.title = title
+
+        if description:
+            ticket.description = description
+
+        if status:
+            ticket.status = status
+
+        db.session.commit()
+
+        ticket_data = build_response_dict_ticket(ticket)
+
+        return jsonify(ticket_data), 200
+    else:
+        bearer_token = request.headers.get('Authorization')
+
+        if not bearer_token:
+            return {'error': 'Missing token'}, 401
+
+        customer_id_payload = get_id_from_token(bearer_token)
+
+        if customer_id_payload == 'Invalid':
+            return {'error': 'Invalid token'}, 401
+
+        ticket = find_ticket_by_id(ticket_id)
+
+        if not ticket:
+            return {"error": "Ticket not found"}, 404
+
+        db.session.delete(ticket)
+        db.session.commit()
+
+        return {"msg": "Deleted"}, 204
+
+@bp_ticket.route('/<int:ticket_id>', methods=['DELETE'])
+def ticket_delete(ticket_id):
 
     ticket = find_ticket_by_id(ticket_id)
 
     if not ticket:
         return {"error": "Ticket not found"}, 404
 
-    if title:
-        ticket.title = title
-
-    if description:
-        ticket.description = description
-
-    if status:
-        ticket.status = status
-
+    db.session.delete(ticket)
     db.session.commit()
 
-    ticket_data = build_response_dict_ticket(ticket)
-
-    return jsonify(ticket_data), 200
+    return {"msg": "Deleted"}, 204

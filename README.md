@@ -111,7 +111,7 @@ http://localhost:5000
 	        	"description": "Quando rodo o java o pc trava",
 	        	"id": 1,
 	        	"status": "closed",
-	        	"title": "Agora foi"
+	        	"title": "Example"
 	        }
         ]
 

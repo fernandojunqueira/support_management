@@ -17,3 +17,19 @@ def generate_token(payload: dict):
     SECRET_KEY = os.getenv("SECRET_KEY")
 
     return jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+
+
+def get_id_from_token(bearer_token: str):
+
+    try:
+
+        token = bearer_token.split(' ')[1]
+
+        payload = jwt.decode(
+                token, algorithms=['HS256'],
+                options={'verify_signature': False}
+                )
+
+        return payload.get('customer_id')
+    except jwt.exceptions.InvalidTokenError:
+        return 'Invalid'

@@ -1,5 +1,5 @@
 from flaskr.utils.auth import (
-    generate_password_hash, check_password, generate_token
+    generate_password_hash, check_password, generate_token, get_id_from_token
 )
 from flaskr.utils.customer import (
     find_customer_by_email, find_customer_by_id, build_response_dict_customer
@@ -50,8 +50,15 @@ def test_if_check_password_returns_true():
 
 def test_if_function_generate_token_return_str_len_137():
     response = generate_token({"customer_id": -1, "email": "john@mail.com"})
+    customer_dict.update({"token": f"Bearer {response}"})
 
     assert len(response) == 137
+
+
+def test_if_decode_token_returns_customer_id():
+    response = get_id_from_token(customer_dict["token"])
+
+    assert response == -1
 
 
 def test_build_response_dict_customer():

@@ -113,20 +113,6 @@ def ticket_update_or_delete(ticket_id):
         return {"msg": "Deleted"}, 204
 
 
-@bp_ticket.route('/<int:ticket_id>', methods=['DELETE'])
-def ticket_delete(ticket_id):
-
-    ticket = find_ticket_by_id(ticket_id)
-
-    if not ticket:
-        return {"error": "Ticket not found"}, 404
-
-    db.session.delete(ticket)
-    db.session.commit()
-
-    return {"msg": "Deleted"}, 204
-
-
 @bp_ticket.route('/', methods=['GET'])
 def ticket_list():
 
